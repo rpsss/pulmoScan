@@ -1,0 +1,13 @@
+keras-tuner
+keras-tuner[bayesian]
+matplotlib
+numpy
+tensorflow
+mlxtend
+ipykernel
+pillow
+fastapi
+pickles
+uvicorn
+streamlit_option_menu==0.3.12
+scipy
