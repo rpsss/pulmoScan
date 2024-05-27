@@ -7,9 +7,12 @@ import numpy as np
 
 app = FastAPI()
 
-# Charger le modèle
-with open('../../notebook/cnn_model.pkl', 'rb') as f:
+# Load the model
+with open('../../models/cnn_model.pkl', 'rb') as f:
     model = pickle.load(f)
+
+# Define class labels
+class_labels = ['covid', 'lung_opacity', 'normal', 'pneumonia', 'trash']
 
 @app.get("/")
 def read_root():
@@ -26,6 +29,15 @@ async def predict(file: UploadFile = File(...)):
         image = np.array(image) / 255.0
         image = np.expand_dims(image, axis=0)    
         prediction = model.predict(image)
-        return JSONResponse(content={"prediction": int(np.argmax(prediction[0]))})
+        
+        # Get the highest probability class
+        class_idx = np.argmax(prediction[0])
+        predicted_label = class_labels[class_idx]
+        
+        # If the highest probability is below a threshold, classify as 'trash'
+        if prediction[0][class_idx] < 0.7:
+            predicted_label = 'trash'
+        
+        return JSONResponse(content={"prediction": predicted_label})
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

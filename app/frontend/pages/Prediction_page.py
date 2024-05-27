@@ -7,7 +7,7 @@ st.set_page_config(page_title="Prediction page")
 st.markdown("# Prediction Page")
 st.sidebar.header("Prediction")
 
-# Autoriser le téléchargement de fichiers PNG et JPEG
+# Authorize the user to upload an image
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
