@@ -35,7 +35,7 @@ async def predict(file: UploadFile = File(...)):
         predicted_label = class_labels[class_idx]
         
         # If the highest probability is below a threshold, classify as 'trash'
-        if prediction[0][class_idx] < 0.7:
+        if prediction[0][class_idx] < 0.5:
             predicted_label = 'trash'
         
         return JSONResponse(content={"prediction": predicted_label})

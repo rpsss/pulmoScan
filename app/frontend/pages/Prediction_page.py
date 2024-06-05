@@ -25,3 +25,5 @@ if uploaded_file is not None:
             st.write('Prediction:', response.json()['prediction'])
         else:
             st.write('Error:', response.status_code, response.json()['detail'])
+        if st.button('Modify'):
+            st.switch_page("modif_prediction.py")
