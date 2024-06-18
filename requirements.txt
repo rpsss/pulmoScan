@@ -16,4 +16,5 @@ mysql-connector-python
 dotenv
 bcrypt
 cloud-sql-python-connector
+google-cloud-storage
 pymysql

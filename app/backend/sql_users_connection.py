@@ -58,3 +58,14 @@ def add_user(username, password):
     
     cursor.close()
     connection.close()
+
+def save_image_to_db(image_data, label):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("INSERT INTO image_labels (image_data, label) VALUES (%s, %s)", (image_data, label))
+    connection.commit()
+
+    cursor.close()
+    connection.close()
+

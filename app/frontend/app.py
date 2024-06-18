@@ -2,10 +2,8 @@ import streamlit as st
 import sys
 import os
 
-# Setting the page configuration
 st.set_page_config(page_title="PulmoScan App")
 
-# Adding paths to import backend and pages
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
@@ -13,6 +11,7 @@ sys.path.append(parent_dir)
 from backend.sql_users_connection import verify_user, add_user
 import frontend.Prediction_page as Prediction_page
 import frontend.Home_page as Home_page
+import frontend.Update_prediction as Update_prediction
 
 def main():
     if 'authenticated' not in st.session_state:
@@ -21,6 +20,8 @@ def main():
     if not st.session_state['authenticated']:
         login_or_register()
     else:
+        if 'page' not in st.session_state:
+            st.session_state['page'] = 'Home'
         navigation()
 
 def login_or_register():
@@ -58,12 +59,15 @@ def register():
 
 def navigation():
     st.sidebar.title("Navigation")
-    page = st.sidebar.selectbox("Select a page", ["Home", "Prediction_page"])
-
-    if page == "Home":
-        Home_page.show()
-    elif page == "Prediction_page":
-        Prediction_page.show()
+    if 'image_data' in st.session_state and st.session_state['page'] == 'Update_prediction':
+        Update_prediction.show(st.session_state['image_data'])
+    else:
+        page = st.sidebar.selectbox("Select a page", ["Home", "Prediction_page"])
+        if page == "Home":
+            Home_page.show()
+        elif page == "Prediction_page":
+            Prediction_page.show()
+            st.session_state['page'] = 'Prediction_page'
 
 if __name__ == "__main__":
     main()

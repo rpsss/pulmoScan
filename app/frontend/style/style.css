@@ -1,0 +1,83 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    background-image: url('background_image_url');
+    background-size: cover;
+    background-attachment: fixed;
+    color: #333;
+}
+
+h1, h2, h3 {
+    color: #0056b3;
+    text-align: center;
+}
+
+.stButton>button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.stButton>button:hover {
+    background-color: #004494;
+}
+
+.stRadio>div>div {
+    color: #0056b3;
+}
+
+.stTextInput>div>div>input {
+    border-radius: 8px;
+    border: 1px solid #0056b3;
+    padding: 10px;
+}
+
+.stSidebar .stSelectbox>div>div>div>div {
+    color: #0056b3;
+}
+
+.stMarkdown {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .sidebar-content {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.sidebar .sidebar-content h2 {
+    color: #0056b3;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #0056b3;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.header img {
+    margin-right: 10px;
+}
