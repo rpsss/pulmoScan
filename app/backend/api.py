@@ -8,7 +8,7 @@ import numpy as np
 app = FastAPI()
 
 # Load the model
-with open('../../models/cnn_model.pkl', 'rb') as f:
+with open('../../notebook/models/cnn_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # Define class labels

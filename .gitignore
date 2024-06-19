@@ -1,5 +1,4 @@
 data/
 new_data/
-models/
-notebook/best_model.keras
-app/backend/__pycache__/
+tests/data/
+notebook/models
