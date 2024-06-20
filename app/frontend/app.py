@@ -8,10 +8,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
-from backend.sql_users_connection import verify_user, add_user
+from backend.sql_users_connection import verify_user, add_user, get_user_id
 import frontend.Prediction_page as Prediction_page
 import frontend.Home_page as Home_page
 import frontend.Update_prediction as Update_prediction
+import frontend.History_page as History_page
 
 def main():
     if 'authenticated' not in st.session_state:
@@ -40,7 +41,8 @@ def login():
     if st.button("Login"):
         if verify_user(username, password):
             st.session_state['authenticated'] = True
-            st.rerun()
+            st.session_state['user_id'] = get_user_id(username)  # Ensure user_id is stored in session
+            st.experimental_rerun()
         else:
             st.error("Invalid username or password")
 
@@ -60,14 +62,15 @@ def register():
 def navigation():
     st.sidebar.title("Navigation")
     if 'image_data' in st.session_state and st.session_state['page'] == 'Update_prediction':
-        Update_prediction.show(st.session_state['image_data'])
+        Update_prediction.show()
     else:
-        page = st.sidebar.selectbox("Select a page", ["Home", "Prediction_page"])
+        page = st.sidebar.radio("Go to", ["Home", "Prediction", "History"])
         if page == "Home":
             Home_page.show()
-        elif page == "Prediction_page":
+        elif page == "Prediction":
             Prediction_page.show()
-            st.session_state['page'] = 'Prediction_page'
+        elif page == "History":
+            History_page.show()
 
 if __name__ == "__main__":
     main()
