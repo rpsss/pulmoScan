@@ -69,3 +69,55 @@ def save_image_to_db(image_data, label):
     cursor.close()
     connection.close()
 
+def save_prediction(user_id, image_data, original_prediction):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "INSERT INTO user_predictions (user_id, image_data, original_prediction) VALUES (%s, %s, %s)",
+        (user_id, image_data, original_prediction)
+    )
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+def update_prediction(user_id, image_data, final_prediction, modified):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "UPDATE user_predictions SET final_prediction = %s, modified = %s, modified_at = CURRENT_TIMESTAMP WHERE user_id = %s AND image_data = %s",
+        (final_prediction, modified, user_id, image_data)
+    )
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+def get_user_predictions(user_id):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT * FROM user_predictions WHERE user_id = %s", (user_id,))
+    predictions = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return predictions
+
+# Function to get user ID based on username
+def get_user_id(username):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT id FROM users WHERE username = %s", (username,))
+    user = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+    
+    if user:
+        return user['id']
+    return None
