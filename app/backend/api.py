@@ -1,15 +1,21 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import pickle
 from PIL import Image
 import io
 import numpy as np
+from sql_users_connection import save_prediction, update_prediction, get_user_predictions
+import base64
 
 app = FastAPI()
 
-# Charger le modèle
-with open('../../notebook/cnn_model.pkl', 'rb') as f:
+# Load the model
+with open('../../notebook/models/cnn_model.pkl', 'rb') as f:
     model = pickle.load(f)
+
+# Define class labels
+class_labels = ['covid', 'lung_opacity', 'normal', 'pneumonia', 'trash']
 
 @app.get("/")
 def read_root():
@@ -24,8 +30,65 @@ async def predict(file: UploadFile = File(...)):
             image = image.convert('RGB')
         image = image.resize((150, 150))
         image = np.array(image) / 255.0
-        image = np.expand_dims(image, axis=0)    
+        image = np.expand_dims(image, axis=0)
         prediction = model.predict(image)
-        return JSONResponse(content={"prediction": int(np.argmax(prediction[0]))})
+
+        # Get the highest probability class
+        class_idx = np.argmax(prediction[0])
+        predicted_label = class_labels[class_idx]
+
+        # If the highest probability is below a threshold, classify as 'trash'
+        if prediction[0][class_idx] < 0.5:
+            predicted_label = 'trash'
+
+        return JSONResponse(content={"prediction": predicted_label})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+class Prediction(BaseModel):
+    user_id: int
+    image_data: str  # This will be a base64 encoded string
+    original_prediction: str
+
+class UpdatePrediction(BaseModel):
+    user_id: int
+    image_data: str  # This will be a base64 encoded string
+    final_prediction: str
+    modified: bool
+
+@app.post("/save_prediction/")
+def save_prediction_endpoint(prediction: Prediction):
+    try:
+        image_data = base64.b64decode(prediction.image_data)  # Decode base64 to bytes
+        save_prediction(
+            prediction.user_id,
+            image_data,
+            prediction.original_prediction
+        )
+        return {"message": "Prediction saved successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/update_prediction/")
+def update_prediction_endpoint(prediction: UpdatePrediction):
+    try:
+        image_data = base64.b64decode(prediction.image_data)  # Decode base64 to bytes
+        update_prediction(
+            prediction.user_id,
+            image_data,
+            prediction.final_prediction,
+            prediction.modified
+        )
+        return {"message": "Prediction updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.get("/user_predictions/{user_id}")
+def user_predictions_endpoint(user_id: int):
+    try:
+        predictions = get_user_predictions(user_id)
+        for prediction in predictions:
+            prediction['image_data'] = base64.b64encode(prediction['image_data']).decode('utf-8')  # Encode bytes to base64
+        return predictions
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
