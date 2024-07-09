@@ -7,12 +7,24 @@ import io
 import numpy as np
 from sql_users_connection import save_prediction, update_prediction, get_user_predictions
 import base64
+from google.cloud import storage
+import os
 
 app = FastAPI()
 
-# Load the model
-with open('../../notebook/models/cnn_model.pkl', 'rb') as f:
-    model = pickle.load(f)
+GCS_BUCKET_NAME=os.getenv("GCS_BUCKET_NAME")
+
+def load_model_from_gcs(bucket_name, model_filename):
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(model_filename)
+    model_local_path = f"../models/{model_filename}"
+    blob.download_to_filename(model_local_path)
+    with open(model_local_path, "rb") as model_file:
+        model = pickle.load(model_file)
+    return model
+
+model = load_model_from_gcs(GCS_BUCKET_NAME, "cnn_model.pkl")
 
 # Define class labels
 class_labels = ['covid', 'lung_opacity', 'normal', 'pneumonia', 'trash']

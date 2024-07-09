@@ -1,5 +1,5 @@
 data/
 new_data/
 test_data/
-notebook/models
+/app/models/*
 **/__pycache__/
