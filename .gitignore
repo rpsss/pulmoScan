@@ -1,5 +1,6 @@
 data/
 new_data/
 test_data/
-notebook/models
+app/models/cnn_model.pkl
+app/pulmoscanai.json
 **/__pycache__/

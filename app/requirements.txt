@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pymysql
+bcrypt
+python-dotenv
+google-cloud-storage
+pillow
+numpy
+requests
+streamlit
