@@ -6,12 +6,8 @@ First you have to install all the packages, you have two options :
 
 Next, you have to train the model. You just have to execute all the notebook named image_classiffication
 
-To start the application you have to open two terminals.
+To start the application you have to open a terminal and write this :
 
-In the first one you have to write this : 
-cd app/backend/
-uvicorn api:app --reload
-
-In the second terminal, you have to write this :
-cd app/frontend/
-streamlit run Home_page.py 
+cd app/
+docker build -t pulmoapp .
+docker run -p 8000:8000 -p 8501:8501 pulmoapp

@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 from google.cloud.sql.connector import Connector, IPTypes
+from google.cloud import storage
 import pymysql.cursors
 import bcrypt
 

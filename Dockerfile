@@ -11,12 +11,12 @@ ENV DB_NAME="PulmoScanAI"
 ENV GCS_BUCKET_NAME="pulmobucket_models"
 
 # Copy the requirements file into the container
-COPY requirements.txt /app/requirements.txt
+COPY ./app/requirements.txt /app/requirements.txt
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY pulmoscanai.json /app/service_account_key.json
+COPY ./pulmoscanai.json /app/service_account_key.json
 ENV GOOGLE_APPLICATION_CREDENTIALS="/app/service_account_key.json"
 
 
