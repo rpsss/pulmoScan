@@ -36,7 +36,7 @@ jobs:
           context: .
           file: ./Dockerfile
           load: true
-          tags: pulmoscanainame:latest
+          tags: pulmoscanai
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
 
@@ -47,4 +47,4 @@ jobs:
 
       - name: Run image
         run: |
-          docker run -p 8000:8000 -p 8501:8501 pulmoapp
+          docker run -p 8000:8000 -p 8501:8501 pulmoscanai
