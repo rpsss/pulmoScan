@@ -6,8 +6,7 @@ First you have to install all the packages, you have two options :
 
 Next, you have to train the model. You just have to execute all the notebook named image_classiffication
 
-To start the application you have to open a terminal and write this :
+To start the application you have to open a terminal in the root directory of the project and write this :
 
-cd app/
 docker build -t pulmoapp .
 docker run -p 8000:8000 -p 8501:8501 pulmoapp
