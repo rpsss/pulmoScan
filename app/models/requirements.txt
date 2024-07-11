@@ -1,0 +1,17 @@
+numpy
+pillow
+fastapi
+pickles
+uvicorn
+streamlit
+streamlit_option_menu==0.3.12
+scipy
+mysql-connector-python
+python-dotenv
+bcrypt
+cloud-sql-python-connector
+google-cloud-storage
+pymysql
+pydantic
+keras-tuner[bayesian]
+tensorflow
