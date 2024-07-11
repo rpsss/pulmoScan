@@ -26,10 +26,10 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/pulmoScan:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/pulmoscan:latest
 
       - name: Build and push Docker image with commit SHA tag
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/pulmoScan:${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/pulmoscan:${{ github.sha }}
